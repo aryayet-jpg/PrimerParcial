@@ -14,6 +14,7 @@ def es_simbolo(caracter: str) -> bool:
             return True
     return False
 
+#Aca empiezan las funciones de procesamiento
 
 def validar_ingreso(contraseña: str) -> bool:
     """
@@ -23,7 +24,7 @@ def validar_ingreso(contraseña: str) -> bool:
     if largo == 0:
         print("ERROR. La contraseña no puede estar vacia. ")
         return False 
-    if largo <8:
+    if largo < 8:
         print("INCORRECTA. Debe tener al menos 8 caracteres. ")
         return False
     if contraseña[0] == " ":
@@ -113,9 +114,8 @@ def invertir (contraseña: str) -> str:
 
     for i in range(largo):
         posicion_al_reves = largo - 1 - i
-        invertida = invertida + contraseña [posicion_al_reves]
+        invertida = invertida + contraseña[posicion_al_reves]
 
-    
     return invertida
 
 def es_palindromo(contraseña: str) -> bool:
@@ -129,6 +129,81 @@ def es_palindromo(contraseña: str) -> bool:
         return False
 
 
+def generar_reporte(contraseña: str) -> None:
+    """
+    genera un reporte estadístico
+    """
+    print("Reporte estadistico: ")
+    cantidad_letras = 0
+    cantidad_numeros = 0
+    cantidad_simbolos = 0
+    cantidad_repeticiones = 0
+
+    longitud_total = len(contraseña)
+
+    for i in range(len(contraseña)): #verifica cada letra 
+        
+        caracter = contraseña[i]
+        #cant d cada uno
+        if (caracter >= "A" and caracter <= "Z") or (caracter >= "a" and caracter <= "z"):
+            cantidad_letras += 1
+
+        elif caracter >= "0" and caracter <= "9":
+            cantidad_numeros += 1
+
+        else:
+            cantidad_simbolos += 1
+
+    print(f"Longitud total: {longitud_total}")
+
+    #porcentajes  
+    porcentaje_letras = (cantidad_letras * 100) / longitud_total 
+    porcentaje_numeros = (cantidad_numeros * 100) / longitud_total
+    porcentaje_simbolos = (cantidad_simbolos * 100) / longitud_total
+
+    print(f"Cantidad de letras: {cantidad_letras}")
+    print(f"Cantidad de numeros: {cantidad_numeros}")
+    print(f"Cantidad de simbolos: {cantidad_simbolos}")
+    print(f"Porcentaje de letras: {porcentaje_letras}%")
+    print(f"Porcentaje de números: {porcentaje_numeros}%")
+    print(f"Porcentaje de símbolos: {porcentaje_simbolos}%")
+
+def ordenar_caracteres(contraseña: str, ascendente: bool) -> str:
+    """
+    Ordena los caracteres de la contraseña usando el método Burbuja más básico.
+    """
+    largo = len(contraseña) 
+    
+    # lista manual
+    lista = []
+    for i in range(largo):
+        lista = lista + [contraseña[i]]
+
+    # burbu
+    for i in range(largo):
+        # comparacion ek actual con el de la derecha
+        for j in range(largo - 1):
+            
+            if ascendente == True:
+                if lista[j] > lista[j + 1]:
+                    aux = lista[j]
+                    lista[j] = lista[j + 1]
+                    lista[j + 1] = aux
+                    
+            else:
+                if lista[j] < lista[j + 1]:
+                    aux = lista[j]
+                    lista[j] = lista[j + 1]
+                    lista[j + 1] = aux
+
+    
+    resultado = ""
+    for i in range(largo):
+        resultado = resultado + lista[i]
+        
+    return resultado
+
+
 def ejecucion():
     """
     Función principal que controla el flujo del menú del programa.
@@ -136,7 +211,7 @@ def ejecucion():
     clave_actual = ""
     opcion = ""
     
-    while opcion != "8":
+    while opcion != "9":
         print("\n--- MENÚ PRINCIPAL ---")
         print("1. Ingresar contraseña.")
         print("2. Validar nivel de seguridad.")
@@ -167,21 +242,28 @@ def ejecucion():
             
         if opcion == "5":
             print(f"Resultado: {invertir(clave_actual)}")
+        
+        if opcion == "6":
+            return generar_reporte(clave_actual)
             
         if opcion == "7":
             if es_palindromo(clave_actual):
                 print("¡Es palíndromo!")
             else:
                 print("No es palíndromo.")
+        
+        if opcion == "8":
+            elegir = input("Ingrese 'A' para Ascendente o 'D' para Descendente: ")
+            
+            if elegir == "A":
+                print(f"Orden Ascendente: {ordenar_caracteres(clave_actual, True)}")
+            else:
+                print(f"Orden Descendente: {ordenar_caracteres(clave_actual, False)}")
+
         if opcion == "9":
             print("Saliendo del programa. Muchas gracias!!")
 
 ejecucion()
-
-
-
-
-
 
 
 
